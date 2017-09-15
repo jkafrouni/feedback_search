@@ -12,46 +12,51 @@ relevance feedback to improve the search results returned by Google.
 """
 import sys
 
-from googleapiclient.discovery import build
-from config import DEVELOPER_KEY, SEARCH_ENGINE_ID
+from feedback_search import query as query_file
+from feedback_search import feedback
+from feedback_search import enhance_query
+
 
 def main():
-    """Main routine, queries Google Search API"""
-    args = sys.argv[1:]
+    """
+    Main routine, 
+    Takes initial_query and target_precision provided as input,
+    Until target_precision is achieved:
+        Runs enhanced query, asks user's feedback, computes new precision.
+    """
 
     if len(sys.argv) != 3:
         print('Use: python -m feedback_search <query> <precision>')
         return
 
     query = sys.argv[1]
-    precision = sys.argv[2]
 
-    print('Parameters:')
-    print('Query = {}'.format(query))
-    print('Precision = {}'.format(precision))
-    
-    print('Google Search Results:')
-    print('======================')
+    try:
+        target_precision = float(sys.argv[2])
+    except ValueError:
+        print('<precision> must be a float between 0 and 1 !')
+        return
 
-    # Build a service object for interacting with the API.
-    service = build("customsearch", "v1", developerKey=DEVELOPER_KEY)
+    if target_precision > 1 or target_precision <0:
+        print('<precision> must be a float between 0 and 1 !')
+        return
 
-    res = service.cse().list(
-        q=query,
-        cx=SEARCH_ENGINE_ID,
-    ).execute()
+    achieved_precision = 0
 
-    items = res['items']
+    while achieved_precision < target_precision:
+        print('Parameters:')
+        print('Query = {}'.format(query))
+        print('Precision = {}'.format(target_precision))
+        print('')
+        
+        results = query_file.query_google(query)
+        feedback.ask_feedback(results)
 
-    short_items = [{'url': item['link'], 'title': item['title'], 'summary': item['snippet']} for item in items]
+        achieved_precision = len([result['relevant'] for result in results if result['relevant'] == 1])/len(results)
 
-    for i, short_item in enumerate(short_items):
-        print('Result ', i+1)
-        print('[')
-        print('URL: ', short_item['url'])
-        print('Title: ', short_item['title'])
-        print('Summary: ', short_item['summary'])
-        print('] \n')
+        print('Achieved precision: ', achieved_precision)
+
+        new_query = enhance_query.enhance_query(query, results)
 
 if __name__ == '__main__':
     main()
