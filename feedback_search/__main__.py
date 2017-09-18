@@ -15,12 +15,13 @@ import sys
 from feedback_search import query as query_file
 from feedback_search import feedback
 from feedback_search import enhance_query
+from feedback_search import index
 
 
 def main():
     """
     Main routine, 
-    Takes initial_query and target_precision provided as input,
+    Takes initial query and target_precision provided as input,
     Until target_precision is achieved:
         Runs enhanced query, asks user's feedback, computes new precision.
     """
@@ -43,20 +44,39 @@ def main():
 
     achieved_precision = 0
 
-    while achieved_precision < target_precision:
+    indexer = index.Indexer()
+    query_optimizer = enhance_query.RocchioQueryOptimizer(1, 1, 1)
+
+    while (achieved_precision < target_precision):
         print('Parameters:')
         print('Query = {}'.format(query))
         print('Precision = {}'.format(target_precision))
         print('')
         
         results = query_file.query_google(query)
+
+        if len(results) < 10:
+            print('Too few results, aborting...')
+            break
+
+        # Ask feedback to user, store feedback in results dict directly
         feedback.ask_feedback(results)
 
-        achieved_precision = len([result['relevant'] for result in results if result['relevant'] == 1])/len(results)
+        relevant = [result for result in results if result['relevant']]
+        non_relevant = [result for result in results if not result['relevant']]
+        achieved_precision = len(relevant)/len(results)
+
+        if achieved_precision == 0:
+            print('Precision@10 is 0, aborting...')
+            break
+
+        indexer.reset()
+        for document in results:
+            indexer.index(document)
 
         print('Achieved precision: ', achieved_precision)
 
-        new_query = enhance_query.enhance_query(query, results)
+        query = query_optimizer.enhance(query, indexer.inverted_database, relevant, non_relevant)
 
 if __name__ == '__main__':
     main()

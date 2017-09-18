@@ -22,6 +22,6 @@ def ask_feedback(query_results):
             print('Please type in Y or N (or y or n)')
             relevant = input("Relevant (Y/N)?")
 
-        result.update({'relevant': 1 if relevant in ["Y", "y"] else 0})
+        result.update({'relevant': True if relevant.upper() == "Y" else False})
 
     return query_results
