@@ -8,7 +8,9 @@ Rules:
 - Words can (and should) be reordered
 """
 import math
-import re
+import functools
+
+from feedback_search import preprocess
 
 
 class RocchioQueryOptimizer:
@@ -20,11 +22,8 @@ class RocchioQueryOptimizer:
 
     def enhance(self, query, inverted_db, relevant, non_relevant):
 
-        # quick preprocessing of the query:
-        query = re.split('\W+', query) # split into words, without punctuation
-        if '' in query: # quick fix, regex adds empty string
-            query.remove('') 
-        query = [term.lower() for term in query] # lower everything
+        query = preprocess.split_remove_punctuation(query)
+        query = preprocess.remove_stopwords(query)
 
         # initialize tf-idf weights vectors:
         query_weights_vector = dict()
@@ -69,6 +68,7 @@ class RocchioQueryOptimizer:
                 ranked_new_query_words.remove(term)
 
         # add two best words to query:
-        return query + ranked_new_query_words[-2:]
+        query += ranked_new_query_words[-2:]
 
-
+        # return query as a string an not a list:
+        return functools.reduce((lambda x, y: x + ' ' + y), query)

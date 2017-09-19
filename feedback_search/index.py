@@ -1,3 +1,5 @@
+from feedback_search import preprocess
+
 import re
 
 
@@ -17,10 +19,8 @@ class Indexer:
 
     def index(self, document):
 
-        # quick preprocessing of the text:
-        terms = re.split('\W+', document['summary']) # split into words, without punctuation
-        terms.remove('') # quick fix, regex adds empty string
-        terms = [term.lower() for term in terms] # lower everything
+        terms = preprocess.split_remove_punctuation(document['summary'])
+        terms = preprocess.remove_stopwords(terms)
 
         document['tf_vector'] = dict()
 
