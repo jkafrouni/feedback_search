@@ -3,14 +3,17 @@ Rules:
 
 - Automatical enhancement, no further human input after feedback has been given
 - Introduce at most 2 new words
-- Cannot delete any words of the input query
+- Cannot delete any words of the input query (neither initial nor current query)
 - Queries should only contain words, no additional operators
 - Words can (and should) be reordered
 """
 import math
 import functools
+import logging
 
 from feedback_search import preprocess
+
+logging.basicConfig(filename='logs/feedback_search.log', format='%(asctime)s %(message)s', level=logging.INFO)
 
 
 class RocchioQueryOptimizer:
@@ -22,8 +25,10 @@ class RocchioQueryOptimizer:
 
     def enhance(self, query, inverted_db, relevant, non_relevant):
 
+        logging.info('orginal query: %s', query)
         query = preprocess.split_remove_punctuation(query)
         query = preprocess.remove_stopwords(query)
+        logging.info('preprocessed query: %s', query)
 
         # initialize tf-idf weights vectors:
         query_weights_vector = dict()
@@ -63,12 +68,16 @@ class RocchioQueryOptimizer:
 
         # rank words by order:
         ranked_new_query_words = sorted(new_query_weights_vector, key=new_query_weights_vector.get)
+        logging.info('10 best new query words: %s', ranked_new_query_words[-10:])
+
         for term in query:
             if term in ranked_new_query_words:
                 ranked_new_query_words.remove(term)
 
         # add two best words to query:
         query += ranked_new_query_words[-2:]
+
+        logging.info('2 new query words: %s', ranked_new_query_words[-2:])
 
         # return query as a string an not a list:
         return functools.reduce((lambda x, y: x + ' ' + y), query)

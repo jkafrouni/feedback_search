@@ -11,11 +11,15 @@ Implementation of an information retrieval system that exploits user-provided
 relevance feedback to improve the search results returned by Google.
 """
 import sys
+import logging
 
 from feedback_search import query as query_file
 from feedback_search import feedback
 from feedback_search import enhance_query
 from feedback_search import index
+from config import ALPHA, BETA, GAMMA
+
+logging.basicConfig(filename='logs/feedback_search.log', format='%(asctime)s %(message)s', level=logging.INFO)
 
 
 def main():
@@ -42,12 +46,16 @@ def main():
         print('<precision> must be a float between 0 and 1 !')
         return
 
+    logging.info('-----------------------------------------------------------')
+    logging.info('Started with args: QUERY = %s, PRECISION = %s', query, target_precision)
+
     achieved_precision = 0
 
     indexer = index.Indexer()
-    query_optimizer = enhance_query.RocchioQueryOptimizer(1, 1, 1)
+    query_optimizer = enhance_query.RocchioQueryOptimizer(ALPHA, BETA, GAMMA)
 
     while (achieved_precision < target_precision):
+        logging.info('achieved precision = %s vs target precision = %s, optimizing...', achieved_precision, target_precision)
         print('Parameters:')
         print('Query = {}'.format(query))
         print('Precision = {}'.format(target_precision))
