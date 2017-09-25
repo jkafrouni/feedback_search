@@ -10,11 +10,11 @@ Rules:
 import math
 import functools
 import logging
+import time
 
 from feedback_search import preprocess
 
-logging.basicConfig(filename='logs/feedback_search.log', format='%(asctime)s %(message)s', level=logging.INFO)
-
+logger = logging.getLogger('feedback_search')
 
 class RocchioQueryOptimizer:
 
@@ -25,10 +25,12 @@ class RocchioQueryOptimizer:
 
     def enhance(self, query, inverted_db, relevant, non_relevant):
 
-        logging.info('orginal query: %s', query)
+        initial_time = time.time()
+
+        logger.info('[ROCCHIO]\t orginal query: %s', query)
         query = preprocess.split_remove_punctuation(query)
         query = preprocess.remove_stopwords(query)
-        logging.info('preprocessed query: %s', query)
+        logger.info('[ROCCHIO]\t preprocessed query: %s', query)
 
         # initialize tf-idf weights vectors:
         query_weights_vector = dict()
@@ -68,7 +70,7 @@ class RocchioQueryOptimizer:
 
         # rank words by order:
         ranked_new_query_words = sorted(new_query_weights_vector, key=new_query_weights_vector.get)
-        logging.info('10 best new query words: %s', ranked_new_query_words[-10:])
+        logger.info('[ROCCHIO]\t 10 best new query words: %s', ranked_new_query_words[-10:])
 
         for term in query:
             if term in ranked_new_query_words:
@@ -77,7 +79,8 @@ class RocchioQueryOptimizer:
         # add two best words to query:
         query += ranked_new_query_words[-2:]
 
-        logging.info('2 new query words: %s', ranked_new_query_words[-2:])
+        logger.info('[ROCCHIO]\t 2 new query words: %s', ranked_new_query_words[-2:])
+        logger.info('[ROCCHIO]\t Enhanced query in %s', time.time() - initial_time)
 
         # return query as a string an not a list:
         return functools.reduce((lambda x, y: x + ' ' + y), query)

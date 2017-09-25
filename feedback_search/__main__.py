@@ -17,9 +17,18 @@ from feedback_search import query as query_file
 from feedback_search import feedback
 from feedback_search import enhance_query
 from feedback_search import index
+from feedback_search import scrape
 from config import ALPHA, BETA, GAMMA
 
-logging.basicConfig(filename='logs/feedback_search.log', format='%(asctime)s %(message)s', level=logging.INFO)
+logger = logging.getLogger('feedback_search')
+logger.propagate = False # do not log in console
+handler = logging.FileHandler('logs/feedback_search.log')
+formatter = logging.Formatter(
+    fmt='[%(asctime)s %(levelname)s]\t%(message)s',
+    datefmt='%d-%m-%Y %H:%M:%S')
+handler.setFormatter(formatter)
+logger.addHandler(handler)
+logger.setLevel(logging.DEBUG)
 
 
 def main():
@@ -30,7 +39,7 @@ def main():
         Runs enhanced query, asks user's feedback, computes new precision.
     """
 
-    if len(sys.argv) != 3:
+    if len(sys.argv) < 3:
         print('Use: python -m feedback_search <query> <precision>')
         return
 
@@ -55,13 +64,14 @@ def main():
     query_optimizer = enhance_query.RocchioQueryOptimizer(ALPHA, BETA, GAMMA)
 
     while (achieved_precision < target_precision):
-        logging.info('achieved precision = %s vs target precision = %s, optimizing...', achieved_precision, target_precision)
+        logging.info('[MAIN]\t achieved precision = %s vs target precision = %s, optimizing...', achieved_precision, target_precision)
         print('Parameters:')
         print('Query = {}'.format(query))
         print('Precision = {}'.format(target_precision))
         print('')
         
         results = query_file.query_google(query)
+        scrape.add_url_content(results)
 
         if len(results) < 10:
             print('Too few results, aborting...')
