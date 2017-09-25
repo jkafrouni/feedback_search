@@ -16,6 +16,7 @@ from feedback_search import preprocess
 
 logger = logging.getLogger('feedback_search')
 
+
 class RocchioQueryOptimizer:
 
     def __init__(self, ALPHA, BETA, GAMMA):

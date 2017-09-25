@@ -12,6 +12,7 @@ relevance feedback to improve the search results returned by Google.
 """
 import sys
 import logging
+import threading
 
 from feedback_search import query as query_file
 from feedback_search import feedback
@@ -55,8 +56,7 @@ def main():
         print('<precision> must be a float between 0 and 1 !')
         return
 
-    logging.info('-----------------------------------------------------------')
-    logging.info('Started with args: QUERY = %s, PRECISION = %s', query, target_precision)
+    logger.info('[MAIN]\t Started with args: QUERY = %s, PRECISION = %s', query, target_precision)
 
     achieved_precision = 0
 
@@ -64,14 +64,17 @@ def main():
     query_optimizer = enhance_query.RocchioQueryOptimizer(ALPHA, BETA, GAMMA)
 
     while (achieved_precision < target_precision):
-        logging.info('[MAIN]\t achieved precision = %s vs target precision = %s, optimizing...', achieved_precision, target_precision)
+        logger.info('[MAIN]\t achieved precision = %s vs target precision = %s, optimizing...', achieved_precision, target_precision)
         print('Parameters:')
         print('Query = {}'.format(query))
         print('Precision = {}'.format(target_precision))
         print('')
         
         results = query_file.query_google(query)
-        scrape.add_url_content(results)
+
+        # Fetch the whole documents by scraping the urls in results:
+        scraping_thread = threading.Thread(target=scrape.add_url_content, args=(results,))
+        scraping_thread.start()
 
         if len(results) < 10:
             print('Too few results, aborting...')
@@ -80,9 +83,11 @@ def main():
         # Ask feedback to user, store feedback in results dict directly
         feedback.ask_feedback(results)
 
+        scraping_thread.join() # make sure all the documents have been scraped
+
         relevant = [result for result in results if result['relevant']]
         non_relevant = [result for result in results if not result['relevant']]
-        achieved_precision = len(relevant)/len(results)
+        achieved_precision = len(relevant)/len(results) if results else 0
 
         if achieved_precision == 0:
             print('Precision@10 is 0, aborting...')
