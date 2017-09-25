@@ -99,7 +99,7 @@ def main():
 
         print('Achieved precision: ', achieved_precision)
 
-        query = query_optimizer.enhance(query, indexer.inverted_database, relevant, non_relevant)
+        query = query_optimizer.enhance(query, indexer, relevant, non_relevant)
 
 if __name__ == '__main__':
     main()

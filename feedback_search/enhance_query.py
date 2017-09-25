@@ -24,7 +24,7 @@ class RocchioQueryOptimizer:
         self.BETA = BETA
         self.GAMMA = GAMMA
 
-    def enhance(self, query, inverted_db, relevant, non_relevant):
+    def enhance(self, query, index, relevant, non_relevant):
 
         initial_time = time.time()
 
@@ -39,10 +39,9 @@ class RocchioQueryOptimizer:
         for document in relevant + non_relevant:
             document['weights_vector'] = dict()
 
-        # the vocabulary is all the index words in inverted_db:
-        for term in inverted_db.keys():
-            # idf of the term:
-            idf = math.log((len(relevant) + len(non_relevant))/len(inverted_db[term]))
+        # loop over all the indexed words (ie all the vocabulary):
+        for term in index:
+            idf = index.idf(term)
 
             # Vector representation of query, using tf-idf weights:
             query_weights_vector[term] = math.log(1 + query.count(term), 10) * idf
