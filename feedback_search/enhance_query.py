@@ -30,7 +30,7 @@ class RocchioQueryOptimizer:
 
         logger.info('[ROCCHIO]\t orginal query: %s', query)
         query = preprocess.split_remove_punctuation(query)
-        query = preprocess.remove_stopwords(query)
+        # query = preprocess.remove_stopwords(query)
         logger.info('[ROCCHIO]\t preprocessed query: %s', query)
 
         # initialize tf-idf weights vectors:

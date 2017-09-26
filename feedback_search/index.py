@@ -31,12 +31,20 @@ class Indexer:
     def idf(self, word):
         return math.log(len(self)/len(self.inverted_database[word]))
 
-    def index(self, document):
+    def index(self, document, query):
+        """
+        Given documents and the query,
+        Preprocesses the terms,
+        Builds an inverted database of the documents with words as keys,
+        And builds the term frequency representation of each document
+
+        The query is passed so that stop words that are in the query are not removed from documents
+        """
         initial_time = time.time()
 
-        terms = document['content'] if document['content'] else document['summary'] # work with summary if content not available
+        terms = document['content'] if 'content' in document else document['summary'] # work with summary if content not available
         terms = preprocess.split_remove_punctuation(terms)
-        terms = preprocess.remove_stopwords(terms)
+        terms = preprocess.remove_stopwords(terms, words_to_keep=query)
 
         document['tf_vector'] = dict()
 

@@ -10,9 +10,15 @@ def split_remove_punctuation(text):
 
     return word_list
 
-def remove_stopwords(word_list):
+def remove_stopwords(word_list, words_to_keep=[]):
+    """Doesn't remove the words in words_to_keep if they are present and they are indeed stopwords"""
+    if words_to_keep and isinstance(words_to_keep, str):
+        words_to_keep = split_remove_punctuation(words_to_keep)
+
     for w in STOPWORDS:
-        if w in word_list:
-            word_list.remove(w)
+        if w not in words_to_keep:
+            while w in word_list:
+                # list.remove only removes an element one time
+                word_list.remove(w)
 
     return word_list

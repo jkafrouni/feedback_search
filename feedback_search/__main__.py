@@ -95,7 +95,7 @@ def main():
 
         indexer.reset()
         for document in results:
-            indexer.index(document)
+            indexer.index(document, query)
 
         print('Achieved precision: ', achieved_precision)
 
