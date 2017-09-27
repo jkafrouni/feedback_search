@@ -17,21 +17,55 @@ class Indexer:
     # TODO : add threads to index in parallel when possible
     """
     def __init__(self):
-        self.inverted_database = dict()
-
-    def __iter__(self):
-        return iter(self.inverted_database)
-
-    def __len__(self):
-        return len(self.inverted_database)
+        self.num_of_docs = 0
+        self.vocabulary_index = dict()
+        self.inverted_file = list()
+        self.docs_tf_vectors = list()
+        self.docs_weights_vectors = list()
 
     def reset(self):
         self.__init__()
 
-    def idf(self, word):
-        return math.log(len(self)/len(self.inverted_database[word]))
+    def get_term_idx(self, term):
+        return self.vocabulary_index[term]
 
-    def index(self, document, query):
+    def get_term(self, term_idx):
+        for term in self.vocabulary_index:
+            if self.vocabulary_index[term] == term_idx:
+                return term
+
+    def log_tf(self, term_idx, doc_id):
+        return math.log(1 + self.docs_tf_vectors[doc_id][term_idx], 10)
+
+    def idf(self, term_idx):
+        return math.log(self.num_of_docs/len(self.inverted_file[term_idx]))
+
+    # def compute_docs_weights(self):
+    #     self.docs_weights_vectors = [[0] * len(self.vocabulary_index)] * self.num_of_docs
+    #     for doc_id in range(self.num_of_docs):
+    #         for term_idx in range(len(self.vocabulary_index)):
+    #             self.docs_weights_vectors[doc_id][term_idx] = self.log_tf(term_idx, doc_id) * self.idf(term_idx)
+
+    #         # a remplacer par numpy:
+    #         norm = math.sqrt(sum([x**2 for x in self.docs_weights_vectors[doc_id]]))
+    #         self.docs_weights_vectors[doc_id] = [x/norm for x in self.docs_weights_vectors[doc_id]]
+
+    # def compute_query_weights(self, query):
+    #     """
+    #     Args:
+    #         query: list of strings, already preprocessed
+    #     """
+    #     query_weights_vector = [0] * len(self.vocabulary_index)
+    #     for term in query:
+    #         term_idx = self.get_term_idx(term)
+    #         query_weights_vector[term_idx] = math.log(1 + query.count(term), 10) * self.idf(term_idx)
+    #         # TODO: revoir poids, normaliser
+    #         norm = math.sqrt(sum([x**2 for x in query_weights_vector]))
+    #         query_weights_vector = [x/norm for x in query_weights_vector]
+
+    #     return query_weights_vector
+
+    def index(self, documents, query):
         """
         Given documents and the query,
         Preprocesses the terms,
@@ -42,21 +76,29 @@ class Indexer:
         """
         initial_time = time.time()
 
-        terms = document['content'] if 'content' in document else document['summary'] # work with summary if content not available
-        terms = preprocess.split_remove_punctuation(terms)
-        terms = preprocess.remove_stopwords(terms, words_to_keep=query)
+        self.num_of_docs = len(documents)
 
-        document['tf_vector'] = dict()
+        documents_terms = [] # will be filled with lists of terms of each document
 
-        for term in terms:
-            if term in self.inverted_database:
-                self.inverted_database[term][document['id']] = document
-            else:
-                self.inverted_database[term] = {document['id']: document}
+        for document in documents:
+            # Preprocessing
+            terms = document['content'] if 'content' in document else document['summary'] # work with summary if content not available
+            terms = preprocess.split_remove_punctuation(terms)
+            terms = preprocess.remove_stopwords(terms, words_to_keep=query)
+            documents_terms.append(terms)
 
-            if term in document['tf_vector']:
-                document['tf_vector'][term] += 1
-            else:
-                document['tf_vector'][term] = 1
+        # Build vocabulary index
+        vocabulary_list = sum(documents_terms, []) + query
+        unique_vocabulary_list = list(set(vocabulary_list))
 
-        logger.info('[INDEXER]\t Indexed document in %s', time.time() - initial_time)
+        self.docs_tf_vectors = [[0] * len(unique_vocabulary_list) for _ in range(self.num_of_docs)]
+        self.vocabulary_index = {term: idx for idx, term in enumerate(unique_vocabulary_list)}
+        self.inverted_file = [set() for _ in range(len(unique_vocabulary_list))]
+
+        for doc_id, terms in enumerate(documents_terms):
+            for term in terms:
+                term_idx = self.get_term_idx(term)
+                self.inverted_file[term_idx].add(doc_id)
+                self.docs_tf_vectors[doc_id][term_idx] += 1
+
+        logger.info('[INDEXER]\t Indexed documents in %s', time.time() - initial_time)

@@ -25,7 +25,9 @@ def scrape(url):
     data = [p.get_text().replace('\n', '').replace('\t','') for p in data]
 
     if not data:
-        log.info('[SCRAPER]\t No data found')
+        logger.info('[SCRAPER]\t No data found')
+    else:
+        logger.debug('[SCRAPER]\t [%s]: \n %s', url, data)
 
     return ' '.join(data) if data else None
 

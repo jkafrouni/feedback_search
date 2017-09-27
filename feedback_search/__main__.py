@@ -19,6 +19,7 @@ from feedback_search import feedback
 from feedback_search import enhance_query
 from feedback_search import index
 from feedback_search import scrape
+from feedback_search import preprocess
 from config import ALPHA, BETA, GAMMA
 
 logger = logging.getLogger('feedback_search')
@@ -85,17 +86,22 @@ def main():
 
         scraping_thread.join() # make sure all the documents have been scraped
 
-        relevant = [result for result in results if result['relevant']]
-        non_relevant = [result for result in results if not result['relevant']]
+        # relevant = [result for result in results if result['relevant']]
+        # non_relevant = [result for result in results if not result['relevant']]
+        relevant = [doc['id'] for doc in results if doc['relevant']]
+        non_relevant = [doc['id'] for doc in results if not doc['relevant']]
         achieved_precision = len(relevant)/len(results) if results else 0
 
         if achieved_precision == 0:
             print('Precision@10 is 0, aborting...')
             break
 
+        logger.info('[MAIN]\t orginal query: %s', query)
+        query = preprocess.split_remove_punctuation(query)
+        logger.info('[MAIN]\t preprocessed query: %s', query)
+
         indexer.reset()
-        for document in results:
-            indexer.index(document, query)
+        indexer.index(results, query)
 
         print('Achieved precision: ', achieved_precision)
 
