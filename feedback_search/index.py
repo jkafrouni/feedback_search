@@ -18,6 +18,7 @@ class Indexer:
     """
     def __init__(self):
         self.num_of_docs = 0
+        self.vocabulary_size = 0
         self.vocabulary_index = dict()
         self.inverted_file = list()
         self.docs_tf_vectors = list()
@@ -39,31 +40,6 @@ class Indexer:
 
     def idf(self, term_idx):
         return math.log(self.num_of_docs/len(self.inverted_file[term_idx]))
-
-    # def compute_docs_weights(self):
-    #     self.docs_weights_vectors = [[0] * len(self.vocabulary_index)] * self.num_of_docs
-    #     for doc_id in range(self.num_of_docs):
-    #         for term_idx in range(len(self.vocabulary_index)):
-    #             self.docs_weights_vectors[doc_id][term_idx] = self.log_tf(term_idx, doc_id) * self.idf(term_idx)
-
-    #         # a remplacer par numpy:
-    #         norm = math.sqrt(sum([x**2 for x in self.docs_weights_vectors[doc_id]]))
-    #         self.docs_weights_vectors[doc_id] = [x/norm for x in self.docs_weights_vectors[doc_id]]
-
-    # def compute_query_weights(self, query):
-    #     """
-    #     Args:
-    #         query: list of strings, already preprocessed
-    #     """
-    #     query_weights_vector = [0] * len(self.vocabulary_index)
-    #     for term in query:
-    #         term_idx = self.get_term_idx(term)
-    #         query_weights_vector[term_idx] = math.log(1 + query.count(term), 10) * self.idf(term_idx)
-    #         # TODO: revoir poids, normaliser
-    #         norm = math.sqrt(sum([x**2 for x in query_weights_vector]))
-    #         query_weights_vector = [x/norm for x in query_weights_vector]
-
-    #     return query_weights_vector
 
     def index(self, documents, query):
         """
@@ -90,6 +66,8 @@ class Indexer:
         # Build vocabulary index
         vocabulary_list = sum(documents_terms, []) + query
         unique_vocabulary_list = list(set(vocabulary_list))
+
+        self.vocabulary_size = len(unique_vocabulary_list)
 
         self.docs_tf_vectors = [[0] * len(unique_vocabulary_list) for _ in range(self.num_of_docs)]
         self.vocabulary_index = {term: idx for idx, term in enumerate(unique_vocabulary_list)}
