@@ -1,4 +1,5 @@
 import re
+from nltk.stem import PorterStemmer
 
 STOPWORDS = open('resources/stopwords.txt').read().split('\n')
 
@@ -22,3 +23,7 @@ def remove_stopwords(word_list, words_to_keep=[]):
                 word_list.remove(w)
 
     return word_list
+
+def stem(word_list):
+    p = PorterStemmer()
+    return [p.stem(word) for word in word_list]

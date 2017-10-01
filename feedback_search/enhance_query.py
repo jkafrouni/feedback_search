@@ -64,8 +64,6 @@ class RocchioQueryOptimizer:
         """
         self.compute_docs_weights(index)
         self.compute_query_weights(index, query)
-        # self.new_query_weights = [0] * len(self.query_weights_vector)
-        self.new_query_weights = np.zeros(index.vocabulary_size)
 
         self.new_query_weights = self.ALPHA * self.query_weights_vector
 

@@ -73,7 +73,7 @@ def main():
         
         results = query_file.query_google(query)
 
-        # Fetch the whole documents by scraping the urls in results:
+        # Fetch the whole documents by scraping the urls in results, as a background task
         scraping_thread = threading.Thread(target=scrape.add_url_content, args=(results,))
         scraping_thread.start()
 
@@ -86,8 +86,6 @@ def main():
 
         scraping_thread.join() # make sure all the documents have been scraped
 
-        # relevant = [result for result in results if result['relevant']]
-        # non_relevant = [result for result in results if not result['relevant']]
         relevant = [doc['id'] for doc in results if doc['relevant']]
         non_relevant = [doc['id'] for doc in results if not doc['relevant']]
         achieved_precision = len(relevant)/len(results) if results else 0
@@ -98,6 +96,7 @@ def main():
 
         logger.info('[MAIN]\t orginal query: %s', query)
         query = preprocess.split_remove_punctuation(query)
+        query = preprocess.stem(query)
         logger.info('[MAIN]\t preprocessed query: %s', query)
 
         indexer.reset()

@@ -61,6 +61,7 @@ class Indexer:
             terms = document['content'] if 'content' in document else document['summary'] # work with summary if content not available
             terms = preprocess.split_remove_punctuation(terms)
             terms = preprocess.remove_stopwords(terms, words_to_keep=query)
+            terms = preprocess.stem(terms)
             documents_terms.append(terms)
 
         # Build vocabulary index
