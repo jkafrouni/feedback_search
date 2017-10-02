@@ -55,7 +55,7 @@ class Indexer:
         The query is passed so that stop words that are in the query are not removed from documents
         """
         initial_time = time.time()
-        logger.info('[INDEXER]\t[ZONE %s] Started indexing...', self.zone.upper())
+        logger.info('[INDEXER]\t[%s] Started indexing...', self.zone.upper())
 
         self.num_of_docs = len(documents)
 
@@ -72,6 +72,10 @@ class Indexer:
             zone_terms = preprocess.split_remove_punctuation(zone_terms)
             zone_terms = preprocess.remove_stopwords(zone_terms, words_to_keep=query)
             zone_terms = preprocess.stem(zone_terms)
+
+            if self.zone == 'summary':
+                logger.info('Preprocessed title terms:')
+                logger.info(zone_terms)
 
             all_terms = preprocess.split_remove_punctuation(all_terms)
             all_terms = preprocess.remove_stopwords(all_terms, words_to_keep=query)
@@ -100,4 +104,4 @@ class Indexer:
                 self.inverted_file[term_idx].add(doc_id)
                 self.docs_tf_vectors[doc_id][term_idx] += 1
 
-        logger.info('[INDEXER]\t[ZONE %s] Indexed documents in %s', self.zone.upper(), time.time() - initial_time)
+        logger.info('[INDEXER]\t[%s] Indexed documents in %s', self.zone.upper(), time.time() - initial_time)

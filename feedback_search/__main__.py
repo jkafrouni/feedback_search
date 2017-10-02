@@ -57,7 +57,7 @@ def main():
         print('<precision> must be a float between 0 and 1 !')
         return
 
-    logger.info('[MAIN]\t Started with args: QUERY = %s, PRECISION = %s', query, target_precision)
+    logger.info('[MAIN]\t\t Started with args: QUERY = %s, PRECISION = %s', query, target_precision)
 
     achieved_precision = 0
 
@@ -66,7 +66,7 @@ def main():
     query_optimizer = enhance_query.RocchioQueryOptimizer(ALPHA, BETA, GAMMA)
 
     while (achieved_precision < target_precision):
-        logger.info('[MAIN]\t achieved precision = %s vs target precision = %s, optimizing...', achieved_precision, target_precision)
+        logger.info('[MAIN]\t\t achieved precision = %s vs target precision = %s, optimizing...', achieved_precision, target_precision)
         print('Parameters:')
         print('Query = {}'.format(query))
         print('Precision = {}'.format(target_precision))
@@ -95,10 +95,10 @@ def main():
             print('Precision@10 is 0, aborting...')
             break
 
-        logger.info('[MAIN]\t orginal query: %s', query)
+        logger.info('[MAIN]\t\t orginal query: %s', query)
         query = preprocess.split_remove_punctuation(query)
         query = preprocess.stem(query)
-        logger.info('[MAIN]\t preprocessed query: %s', query)
+        logger.info('[MAIN]\t\t preprocessed query: %s', query)
 
         for zone in indexers:
             indexers[zone].reset()
