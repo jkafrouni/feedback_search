@@ -16,7 +16,8 @@ class Indexer:
     - computes vector of term frequencies for each document
     # TODO : add threads to index in parallel when possible
     """
-    def __init__(self):
+    def __init__(self, zone='content'):
+        self.zone = zone
         self.num_of_docs = 0
         self.vocabulary_size = 0
         self.vocabulary_index = dict()
@@ -25,7 +26,7 @@ class Indexer:
         self.docs_weights_vectors = list()
 
     def reset(self):
-        self.__init__()
+        self.__init__(self.zone)
 
     def get_term_idx(self, term):
         return self.vocabulary_index[term]
@@ -39,7 +40,10 @@ class Indexer:
         return math.log(1 + self.docs_tf_vectors[doc_id][term_idx], 10)
 
     def idf(self, term_idx):
-        return math.log(self.num_of_docs/len(self.inverted_file[term_idx]))
+        if self.inverted_file[term_idx]: # A VERIFIER
+            return math.log(self.num_of_docs/len(self.inverted_file[term_idx]))
+        else:
+            return 0
 
     def index(self, documents, query):
         """
@@ -51,21 +55,33 @@ class Indexer:
         The query is passed so that stop words that are in the query are not removed from documents
         """
         initial_time = time.time()
+        logger.info('[INDEXER]\t[ZONE %s] Started indexing...', self.zone.upper())
 
         self.num_of_docs = len(documents)
 
         documents_terms = [] # will be filled with lists of terms of each document
 
+        vocabulary_list = []
+
         for document in documents:
             # Preprocessing
-            terms = document['content'] if 'content' in document else document['summary'] # work with summary if content not available
-            terms = preprocess.split_remove_punctuation(terms)
-            terms = preprocess.remove_stopwords(terms, words_to_keep=query)
-            terms = preprocess.stem(terms)
-            documents_terms.append(terms)
+            zone_terms = document[self.zone]
+            all_terms = ' '.join([document[zone] for zone in ['title', 'summary', 'content']])
+            # we index only the words from the given zone in doc, but the vocabulary list needs to have all the words
+            # so that multiple indexers can be used together in enhance_query
+            zone_terms = preprocess.split_remove_punctuation(zone_terms)
+            zone_terms = preprocess.remove_stopwords(zone_terms, words_to_keep=query)
+            zone_terms = preprocess.stem(zone_terms)
+
+            all_terms = preprocess.split_remove_punctuation(all_terms)
+            all_terms = preprocess.remove_stopwords(all_terms, words_to_keep=query)
+            all_terms = preprocess.stem(all_terms)
+
+            documents_terms.append(zone_terms)
+            vocabulary_list += all_terms
 
         # Build vocabulary index
-        vocabulary_list = sum(documents_terms, []) + query
+        vocabulary_list += query
         unique_vocabulary_list = list(set(vocabulary_list))
 
         self.vocabulary_size = len(unique_vocabulary_list)
@@ -76,8 +92,12 @@ class Indexer:
 
         for doc_id, terms in enumerate(documents_terms):
             for term in terms:
-                term_idx = self.get_term_idx(term)
+                try:
+                    term_idx = self.get_term_idx(term)
+                except Exception:
+                    logger.error('Pb indexing: %s', terms)
+                    break
                 self.inverted_file[term_idx].add(doc_id)
                 self.docs_tf_vectors[doc_id][term_idx] += 1
 
-        logger.info('[INDEXER]\t Indexed documents in %s', time.time() - initial_time)
+        logger.info('[INDEXER]\t[ZONE %s] Indexed documents in %s', self.zone.upper(), time.time() - initial_time)

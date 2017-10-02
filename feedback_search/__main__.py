@@ -61,7 +61,8 @@ def main():
 
     achieved_precision = 0
 
-    indexer = index.Indexer()
+    # Build one index for each zone of the documents (see enhance_query):
+    indexers = {zone: index.Indexer(zone) for zone in ['title', 'summary', 'content']}
     query_optimizer = enhance_query.RocchioQueryOptimizer(ALPHA, BETA, GAMMA)
 
     while (achieved_precision < target_precision):
@@ -99,12 +100,13 @@ def main():
         query = preprocess.stem(query)
         logger.info('[MAIN]\t preprocessed query: %s', query)
 
-        indexer.reset()
-        indexer.index(results, query)
+        for zone in indexers:
+            indexers[zone].reset()
+            indexers[zone].index(results, query)
 
         print('Achieved precision: ', achieved_precision)
 
-        query = query_optimizer.enhance(query, indexer, relevant, non_relevant)
+        query = query_optimizer.enhance(query, indexers, relevant, non_relevant)
 
 if __name__ == '__main__':
     main()

@@ -27,15 +27,34 @@ class RocchioQueryOptimizer:
         self.query_weights_vector = None
         self.new_query_weights = None
 
-    def compute_docs_weights(self, index):
-        self.docs_weights_vectors = np.zeros((index.num_of_docs, index.vocabulary_size))
+    def compute_docs_weights(self, indexers):
+        """
+        Args:
+            indexers: list of Indexer objects
+        We use one indexer for each zone of docs (title, summary, content)
+        And do a weighted sum of the weights given by each indexer
+        As scraping might fail, documents may have no content:
+        If it's the case we rearrange the weight so that such documents are not penalized # TODO
+        """
+        vocabulary_size = indexers['title'].vocabulary_size
+        num_of_docs = indexers['content'].num_of_docs
 
-        for doc_id in range(index.num_of_docs):
-            for term_idx in range(index.vocabulary_size):
-                self.docs_weights_vectors[doc_id, term_idx] = index.log_tf(term_idx, doc_id) * index.idf(term_idx)
+        self.docs_weights_vectors = np.zeros((num_of_docs, vocabulary_size))
+        zone_weights_vectors = dict()
 
-            if np.linalg.norm(self.docs_weights_vectors[doc_id]) != 0:
-                self.docs_weights_vectors[doc_id] /= np.linalg.norm(self.docs_weights_vectors[doc_id])
+        for zone in ['title', 'summary', 'content']: 
+            zone_weights_vectors[zone] = np.zeros((num_of_docs, vocabulary_size))
+
+            for doc_id in range(num_of_docs):
+                for term_idx in range(vocabulary_size):
+                    zone_weights_vectors[zone][doc_id, term_idx] += indexers[zone].log_tf(term_idx, doc_id) * indexers[zone].idf(term_idx)
+
+                if np.linalg.norm(zone_weights_vectors[zone][doc_id]) != 0:
+                    zone_weights_vectors[zone][doc_id] /= np.linalg.norm(zone_weights_vectors[zone][doc_id])
+
+        self.docs_weights_vectors = (3/6) * zone_weights_vectors['title'] \
+                                  + (2/6) * zone_weights_vectors['summary'] \
+                                  + (1/6) * zone_weights_vectors['content']
 
     def compute_query_weights(self, index, query):
         """
@@ -52,7 +71,7 @@ class RocchioQueryOptimizer:
             if np.linalg.norm(self.query_weights_vector) != 0:
                 self.query_weights_vector /= np.linalg.norm(self.query_weights_vector)
 
-    def enhance(self, query, index, relevant, non_relevant):
+    def enhance(self, query, indexers, relevant, non_relevant):
         """
         Given the raw query and the index of documents with inverted file computed,
         Runs Rocchio's algorithms and returns the augmented query
@@ -62,8 +81,8 @@ class RocchioQueryOptimizer:
             relevant: list of ints (doc_ids)
             non_relevant: list of ints (doc_ids)
         """
-        self.compute_docs_weights(index)
-        self.compute_query_weights(index, query)
+        self.compute_docs_weights(indexers)
+        self.compute_query_weights(indexers['content'], query)
 
         self.new_query_weights = self.ALPHA * self.query_weights_vector
 
@@ -78,15 +97,15 @@ class RocchioQueryOptimizer:
         # rank words by order:
         ranked_new_terms_ids = list(np.argsort(self.new_query_weights))
         
-        logger.info('[ROCCHIO]\t 10 best new query words: %s', [index.get_term(term_idx) for term_idx in ranked_new_terms_ids[-10:]])
+        logger.info('[ROCCHIO]\t 10 best new query words: %s', [indexers['content'].get_term(term_idx) for term_idx in ranked_new_terms_ids[-10:]])
 
         for term in query:
-            term_idx = index.get_term_idx(term)
+            term_idx = indexers['content'].get_term_idx(term)
             if term_idx in ranked_new_terms_ids:
                 ranked_new_terms_ids.remove(term_idx)
 
         # add two best words to query:
-        query += [index.get_term(term_idx) for term_idx in ranked_new_terms_ids[-2:]]
+        query += [indexers['content'].get_term(term_idx) for term_idx in ranked_new_terms_ids[-2:]]
 
         logger.info('[ROCCHIO]\t 2 new query words: %s', query[-2:])
 

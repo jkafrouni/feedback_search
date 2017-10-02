@@ -29,7 +29,7 @@ def scrape(url):
     else:
         logger.debug('[SCRAPER]\t [%s]: \n %s', url, data)
 
-    return ' '.join(data) if data else None
+    return ' '.join(data) if data else ''
 
 
 def add_url_content(documents):
@@ -41,9 +41,8 @@ def add_url_content(documents):
     """
     def scrape_and_update(doc):
         text = scrape(doc['url'])
-        if text is not None:
-            logger.debug('[SCRAPER]\t Updating "content" for url %s', doc['url'])
-            doc.update({'content': text})
+        logger.debug('[SCRAPER]\t Updating "content" for url %s', doc['url'])
+        doc.update({'content': text})
 
     with ThreadPool(processes=10) as pool:
         for doc in documents:
