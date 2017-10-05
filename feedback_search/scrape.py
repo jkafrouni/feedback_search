@@ -18,14 +18,14 @@ def scrape(url):
         html_page = urlopen(url).read()
     except (http.client.IncompleteRead, urllib.error.URLError):
         logger.warning("[SCRAPER]\t Could not read the page for url: %s", url)
-        return None
+        return ''
     logger.debug('[SCRAPER]\t Parsing with BS')
     soup = BeautifulSoup(html_page, 'html5lib')
     data = soup.findAll('p')
     data = [p.get_text().replace('\n', '').replace('\t','') for p in data]
 
     if not data:
-        logger.info('[SCRAPER]\t No data found')
+        logger.warning('[SCRAPER]\t No data found for url: %s', url)
     else:
         logger.debug('[SCRAPER]\t [%s]: \n %s', url, data)
 

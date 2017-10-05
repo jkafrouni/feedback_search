@@ -20,7 +20,6 @@ from feedback_search import enhance_query
 from feedback_search import index
 from feedback_search import scrape
 from feedback_search import preprocess
-from config import ALPHA, BETA, GAMMA
 
 logger = logging.getLogger('feedback_search')
 logger.propagate = False # do not log in console
@@ -57,13 +56,14 @@ def main():
         print('<precision> must be a float between 0 and 1 !')
         return
 
+    logger.info('\n\n ========================================================================\n\n')
     logger.info('[MAIN]\t\t Started with args: QUERY = %s, PRECISION = %s', query, target_precision)
 
     achieved_precision = 0
 
     # Build one index for each zone of the documents (see enhance_query):
     indexers = {zone: index.Indexer(zone) for zone in ['title', 'summary', 'content']}
-    query_optimizer = enhance_query.RocchioQueryOptimizer(ALPHA, BETA, GAMMA)
+    query_optimizer = enhance_query.RocchioQueryOptimizer()
 
     while (achieved_precision < target_precision):
         logger.info('[MAIN]\t\t achieved precision = %s vs target precision = %s, optimizing...', achieved_precision, target_precision)

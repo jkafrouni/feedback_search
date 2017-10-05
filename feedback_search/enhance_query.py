@@ -10,6 +10,7 @@ Rules:
 import math
 import logging
 import numpy as np
+from feedback_search.constants import ALPHA, BETA, GAMMA, title_weight, summary_weight, content_weight
 
 from feedback_search import preprocess
 
@@ -18,10 +19,13 @@ logger = logging.getLogger('feedback_search')
 
 class RocchioQueryOptimizer:
 
-    def __init__(self, ALPHA, BETA, GAMMA):
+    def __init__(self):
         self.ALPHA = ALPHA
         self.BETA = BETA
         self.GAMMA = GAMMA
+        self.title_weight = title_weight
+        self.summary_weight = summary_weight
+        self.content_weight = content_weight
 
         self.docs_weights_vectors = None
         self.query_weights_vector = None
@@ -52,9 +56,9 @@ class RocchioQueryOptimizer:
                 if np.linalg.norm(zone_weights_vectors[zone][doc_id]) != 0:
                     zone_weights_vectors[zone][doc_id] /= np.linalg.norm(zone_weights_vectors[zone][doc_id])
 
-        self.docs_weights_vectors = (3/6) * zone_weights_vectors['title'] \
-                                  + (2/6) * zone_weights_vectors['summary'] \
-                                  + (1/6) * zone_weights_vectors['content']
+        self.docs_weights_vectors = self.title_weight * zone_weights_vectors['title'] \
+                                  + self.summary_weight * zone_weights_vectors['summary'] \
+                                  + self.content_weight * zone_weights_vectors['content']
 
     def compute_query_weights(self, index, query):
         """

@@ -73,10 +73,6 @@ class Indexer:
             zone_terms = preprocess.remove_stopwords(zone_terms, words_to_keep=query)
             zone_terms = preprocess.stem(zone_terms)
 
-            if self.zone == 'summary':
-                logger.info('Preprocessed title terms:')
-                logger.info(zone_terms)
-
             all_terms = preprocess.split_remove_punctuation(all_terms)
             all_terms = preprocess.remove_stopwords(all_terms, words_to_keep=query)
             all_terms = preprocess.stem(all_terms)
