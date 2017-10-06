@@ -1,5 +1,5 @@
 import re
-from nltk.stem import PorterStemmer
+import nltk
 
 STOPWORDS = open('resources/stopwords.txt').read().split('\n')
 
@@ -25,5 +25,8 @@ def remove_stopwords(word_list, words_to_keep=[]):
     return word_list
 
 def stem(word_list):
-    p = PorterStemmer()
+    p = nltk.stem.PorterStemmer()
     return [p.stem(word) for word in word_list]
+
+def get_bigrams(word_list):
+    return list(nltk.bigrams(word_list))

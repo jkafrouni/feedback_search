@@ -21,6 +21,8 @@ from feedback_search import index
 from feedback_search import scrape
 from feedback_search import preprocess
 
+from tests import mock_feedback
+
 logger = logging.getLogger('feedback_search')
 logger.propagate = False # do not log in console
 handler = logging.FileHandler('logs/feedback_search.log')
@@ -62,7 +64,10 @@ def main():
     achieved_precision = 0
 
     # Build one index for each zone of the documents (see enhance_query):
-    indexers = {zone: index.Indexer(zone) for zone in ['title', 'summary', 'content']}
+    # indexers = {zone: index.Indexer(zone) for zone in ['title', 'summary', 'content']}
+    indexers = {zone: index.UnigramIndexer(zone) for zone in ['title', 'summary', 'content']}
+    bigram_indexers = {zone: index.BigramIndexer(zone) for zone in ['title', 'summary', 'content']}
+
     query_optimizer = enhance_query.RocchioQueryOptimizer()
 
     while (achieved_precision < target_precision):
@@ -84,6 +89,7 @@ def main():
 
         # Ask feedback to user, store feedback in results dict directly
         feedback.ask_feedback(results)
+        # mock_feedback.mock_feedback(results)
 
         scraping_thread.join() # make sure all the documents have been scraped
 
@@ -103,10 +109,14 @@ def main():
         for zone in indexers:
             indexers[zone].reset()
             indexers[zone].index(results, query)
+        
+        for zone in bigram_indexers:
+            bigram_indexers[zone].reset()
+            bigram_indexers[zone].index(results, query)
 
         print('Achieved precision: ', achieved_precision)
 
-        query = query_optimizer.enhance(query, indexers, relevant, non_relevant)
+        query = query_optimizer.enhance(query, indexers, relevant, non_relevant, bigram_indexers=bigram_indexers)
 
 if __name__ == '__main__':
     main()

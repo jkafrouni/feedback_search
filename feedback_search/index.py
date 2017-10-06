@@ -45,6 +45,9 @@ class Indexer:
         else:
             return 0
 
+    def preprocess(self, documents, query):
+        raise NotImplementedError
+    
     def index(self, documents, query):
         """
         Given documents and the query,
@@ -59,8 +62,39 @@ class Indexer:
 
         self.num_of_docs = len(documents)
 
-        documents_terms = [] # will be filled with lists of terms of each document
+        unique_vocabulary_list, documents_terms = self.preprocess(documents, query)
 
+        self.vocabulary_size = len(unique_vocabulary_list)
+
+        self.docs_tf_vectors = [[0] * len(unique_vocabulary_list) for _ in range(self.num_of_docs)]
+        self.vocabulary_index = {term: idx for idx, term in enumerate(unique_vocabulary_list)}
+        self.inverted_file = [set() for _ in range(len(unique_vocabulary_list))]
+
+        for doc_id, terms in enumerate(documents_terms):
+            for term in terms:
+                try:
+                    term_idx = self.get_term_idx(term)
+                except Exception:
+                    logger.error('Pb indexing: %s', terms)
+                    break
+                self.inverted_file[term_idx].add(doc_id)
+                self.docs_tf_vectors[doc_id][term_idx] += 1
+
+        logger.info('[INDEXER]\t[%s] Indexed documents in %s', self.zone.upper(), time.time() - initial_time)
+
+
+class UnigramIndexer(Indexer):
+
+    def __init__(self, zone='content'):
+        super().__init__(zone)
+
+    def find_unigram(self, word):
+        """
+        Given a single word, return the index of the 
+        """
+    def preprocess(self, documents, query):
+
+        documents_terms = [] # will be filled with lists of terms of each document
         vocabulary_list = []
 
         for document in documents:
@@ -84,20 +118,40 @@ class Indexer:
         vocabulary_list += query
         unique_vocabulary_list = list(set(vocabulary_list))
 
-        self.vocabulary_size = len(unique_vocabulary_list)
+        return unique_vocabulary_list, documents_terms
 
-        self.docs_tf_vectors = [[0] * len(unique_vocabulary_list) for _ in range(self.num_of_docs)]
-        self.vocabulary_index = {term: idx for idx, term in enumerate(unique_vocabulary_list)}
-        self.inverted_file = [set() for _ in range(len(unique_vocabulary_list))]
 
-        for doc_id, terms in enumerate(documents_terms):
-            for term in terms:
-                try:
-                    term_idx = self.get_term_idx(term)
-                except Exception:
-                    logger.error('Pb indexing: %s', terms)
-                    break
-                self.inverted_file[term_idx].add(doc_id)
-                self.docs_tf_vectors[doc_id][term_idx] += 1
+class BigramIndexer(Indexer):
 
-        logger.info('[INDEXER]\t[%s] Indexed documents in %s', self.zone.upper(), time.time() - initial_time)
+    def __init__(self, zone='content'):
+        super().__init__(zone)
+
+    def preprocess(self, documents, query):
+
+        documents_bigrams = [] # will be filled with bigrams of terms of each document
+        vocabulary_list = []
+
+        for document in documents:
+            # Preprocessing
+            zone_terms = document[self.zone]
+            all_terms = ' '.join([document[zone] for zone in ['title', 'summary', 'content']])
+            # we index only the bigrams from the given zone in doc, but the vocabulary list needs to have all the words
+            # so that multiple indexers can be used together in enhance_query
+            zone_terms = preprocess.split_remove_punctuation(zone_terms)
+            zone_terms = preprocess.remove_stopwords(zone_terms, words_to_keep=query)
+            zone_terms = preprocess.stem(zone_terms)
+            zone_bigrams = preprocess.get_bigrams(zone_terms)
+
+            all_terms = preprocess.split_remove_punctuation(all_terms)
+            all_terms = preprocess.remove_stopwords(all_terms, words_to_keep=query)
+            all_terms = preprocess.stem(all_terms)
+            all_bigrams = preprocess.get_bigrams(zone_terms)
+
+            documents_bigrams.append(zone_terms)
+            vocabulary_list += all_bigrams
+
+        # Build vocabulary index
+        vocabulary_list += query
+        unique_vocabulary_list = list(set(vocabulary_list))
+
+        return unique_vocabulary_list, documents_bigrams
