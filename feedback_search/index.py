@@ -105,11 +105,11 @@ class UnigramIndexer(Indexer):
             # so that multiple indexers can be used together in enhance_query
             zone_terms = preprocess.split_remove_punctuation(zone_terms)
             zone_terms = preprocess.remove_stopwords(zone_terms, words_to_keep=query)
-            zone_terms = preprocess.stem(zone_terms)
+            # zone_terms = preprocess.stem(zone_terms)
 
             all_terms = preprocess.split_remove_punctuation(all_terms)
             all_terms = preprocess.remove_stopwords(all_terms, words_to_keep=query)
-            all_terms = preprocess.stem(all_terms)
+            # all_terms = preprocess.stem(all_terms)
 
             documents_terms.append(zone_terms)
             vocabulary_list += all_terms
@@ -139,19 +139,18 @@ class BigramIndexer(Indexer):
             # so that multiple indexers can be used together in enhance_query
             zone_terms = preprocess.split_remove_punctuation(zone_terms)
             zone_terms = preprocess.remove_stopwords(zone_terms, words_to_keep=query)
-            zone_terms = preprocess.stem(zone_terms)
+            # zone_terms = preprocess.stem(zone_terms)
             zone_bigrams = preprocess.get_bigrams(zone_terms)
 
             all_terms = preprocess.split_remove_punctuation(all_terms)
             all_terms = preprocess.remove_stopwords(all_terms, words_to_keep=query)
-            all_terms = preprocess.stem(all_terms)
-            all_bigrams = preprocess.get_bigrams(zone_terms)
+            # all_terms = preprocess.stem(all_terms)
+            all_bigrams = preprocess.get_bigrams(all_terms)
 
-            documents_bigrams.append(zone_terms)
+            documents_bigrams.append(zone_bigrams)
             vocabulary_list += all_bigrams
 
         # Build vocabulary index
-        vocabulary_list += query
         unique_vocabulary_list = list(set(vocabulary_list))
 
         return unique_vocabulary_list, documents_bigrams

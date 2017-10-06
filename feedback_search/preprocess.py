@@ -29,4 +29,4 @@ def stem(word_list):
     return [p.stem(word) for word in word_list]
 
 def get_bigrams(word_list):
-    return list(nltk.bigrams(word_list))
+    return [(word_list[i], word_list[i+1]) for i in range(len(word_list)-1) if word_list[i] != word_list[i+1]]

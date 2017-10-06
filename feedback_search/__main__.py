@@ -89,7 +89,7 @@ def main():
 
         # Ask feedback to user, store feedback in results dict directly
         feedback.ask_feedback(results)
-        # mock_feedback.mock_feedback(results)
+        # mock_feedback.mock_feedback(results, query='jaguar')
 
         scraping_thread.join() # make sure all the documents have been scraped
 
@@ -103,7 +103,7 @@ def main():
 
         logger.info('[MAIN]\t\t orginal query: %s', query)
         query = preprocess.split_remove_punctuation(query)
-        query = preprocess.stem(query)
+        # query = preprocess.stem(query)
         logger.info('[MAIN]\t\t preprocessed query: %s', query)
 
         for zone in indexers:

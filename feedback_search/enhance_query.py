@@ -87,6 +87,7 @@ class RocchioQueryOptimizer:
         best_bigram = bigram_indexers['title'].get_term(best_bigram_idx)
 
         if best_bigram[0] in query and best_bigram[1] in query:
+            print('HERE')
             # don't insert the bigram at all, re-order query so that the two words of bigram are together
             bigram_weights[best_bigram_idx] = 0
             query.remove(best_bigram[0])
@@ -95,19 +96,22 @@ class RocchioQueryOptimizer:
             return self.choose_best_bigram(indexers, bigram_weights, query)
 
         elif best_bigram[0] in query or best_bigram[1] in query:
-            # only one word of bigram in query: add the other word to the query + a single best word (from rocchio weights)
+            print('THERE')
+            # case only one word of bigram in query:
+            # put it at the end, add the other word of the bigram to the query,
+            # and add a single best word (from rocchio weights)
             query.remove(best_bigram[0] if best_bigram[0] in query else best_bigram[1])
-            query += best_bigram[0] if best_bigram[0] in query else best_bigram[1]
+            query += best_bigram
 
             best_single_words_indexes = list(np.argsort(self.rocchio_weights))
-            # commencer boucle à 1:
-            for i in range(1, len(best_single_words) + 1):
+
+            for i in range(1, len(best_single_words_indexes) + 1):
                 term = indexers['title'].get_term(best_single_words_indexes[-i])
                 if term not in query:
-                    query += term
+                    query.append(term)
                     break
-
         else:
+            print('NOPE THERE')
             # none of the two words of the bigram is in the query, add the whole bigram
             query += [best_bigram[0], best_bigram[1]]
 
@@ -163,10 +167,18 @@ class RocchioQueryOptimizer:
             # faire ça sur les meilleurs terms plutôt ?
             for bigram_idx in range(bigram_weights.shape[0]):
                 bigram = bigram_indexers['content'].get_term(bigram_idx)
-                weight_1 = self.rocchio_weights[indexers['content'].get_term_idx(bigram[0])]
-                weight_2 = self.rocchio_weights[indexers['content'].get_term_idx(bigram[1])]
+                if not isinstance(bigram, tuple):
+                    print('found not tuple returned by bigram_indexer')
+                try:
+                    weight_1 = self.rocchio_weights[indexers['content'].get_term_idx(bigram[0])]
+                    weight_2 = self.rocchio_weights[indexers['content'].get_term_idx(bigram[1])]
+                except Exception:
+                    print('pb with bigram: ', bigram)
+                    # print(bigram_indexers['content'].vocabulary_index)
 
-                bigram_weights[bigram_idx] *= (weight_1 + weight_2)/2 # scale bigram weight by rocchio single term weight
+                # combine single words rocchio weights and the bigram weight:
+                bigram_weights[bigram_idx] *= 0
+                bigram_weights[bigram_idx] += 1 * (weight_1 + weight_2)/2 # give more importance to rocchio
 
             new_query = self.choose_best_bigram(indexers, bigram_indexers, bigram_weights, query)
 
