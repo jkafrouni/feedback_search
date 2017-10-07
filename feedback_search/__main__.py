@@ -106,13 +106,21 @@ def main():
         # query = preprocess.stem(query)
         logger.info('[MAIN]\t\t preprocessed query: %s', query)
 
+        indexing_threads = []
         for zone in indexers:
             indexers[zone].reset()
-            indexers[zone].index(results, query)
+            t = threading.Thread(target=indexers[zone].index, args=(results, query))
+            t.start()
+            indexing_threads.append(t)
         
         for zone in bigram_indexers:
             bigram_indexers[zone].reset()
-            bigram_indexers[zone].index(results, query)
+            t = threading.Thread(target=bigram_indexers[zone].index, args=(results, query))
+            t.start()
+            indexing_threads.append(t)
+
+        for t in indexing_threads:
+            t.join()
 
         print('Achieved precision: ', achieved_precision)
 

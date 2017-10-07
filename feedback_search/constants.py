@@ -6,6 +6,6 @@ GAMMA = 0.1
 
 # ZONE INDEXING CONSTANTS:
 
-title_weight = 2/6
-summary_weight = 3/6
-content_weight = 1/6
+title_weight = 0.1
+summary_weight = 0.7
+content_weight = 0.2

@@ -14,8 +14,7 @@ class Indexer:
     - stores them in an inverted index, 
     - computes terms frequencies,
     - computes vector of term frequencies for each document
-    # TODO : add threads to index in parallel when possible
-    """
+th    """
     def __init__(self, zone='content'):
         self.zone = zone
         self.num_of_docs = 0
