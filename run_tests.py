@@ -10,10 +10,7 @@ with open('tests/parameters_tuning.txt', 'a') as outfile:
 #         content_weight = (10 - i - j)/10
         
 #         constants_tuning.test_constants(
-#             # "jaguar",
-#             # "lion",
-#             # "brin",
-#             "bulls" ,
+#             # "bulls" ,
 #             {'title_weight': title_weight, "summary_weight": summary_weight, "content_weight": content_weight})
 
-constants_tuning.test_constants("brin", {'title_weight': 0.1, "summary_weight": 0.7, "content_weight": 0.2})
+# constants_tuning.test_constants("brin", {'title_weight': 0.1, "summary_weight": 0.7, "content_weight": 0.2})
