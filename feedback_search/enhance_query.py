@@ -92,7 +92,7 @@ class RocchioQueryOptimizer:
             query.remove(best_bigram[0])
             query.remove(best_bigram[1])
             query += [best_bigram[0], best_bigram[1]]
-            return self.choose_best_bigram(indexers, bigram_weights, query)
+            return self.choose_best_bigram(indexers, bigram_indexers, bigram_weights, query)
 
         elif best_bigram[0] in query or best_bigram[1] in query:
             # case only one word of bigram in query:
