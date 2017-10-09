@@ -1,10 +1,12 @@
-from urllib.request import urlopen
 import urllib.error
 import http.client
 import logging
-from multiprocessing.dummy import Pool as ThreadPool
+import json
 
+from urllib.request import urlopen
+from multiprocessing.dummy import Pool as ThreadPool
 from bs4 import BeautifulSoup
+from tests import mock_query_and_scraping
 
 logger = logging.getLogger('feedback_search')
 
@@ -32,7 +34,7 @@ def scrape(url):
     return ' '.join(data) if data else ''
 
 
-def add_url_content(documents):
+def add_url_content(query, documents):
     """
     Given a list of documents as jsons containing a url field,
     Tries to scrape the corresponding url and extract the body
@@ -49,3 +51,6 @@ def add_url_content(documents):
             pool.apply_async(scrape_and_update, args=(doc,))
         pool.close()
         pool.join()
+
+    # save the results for tests:
+    mock_query_and_scraping.save_query_and_scraping_results(query, documents)

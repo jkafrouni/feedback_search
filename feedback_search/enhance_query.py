@@ -10,8 +10,8 @@ Rules:
 import math
 import logging
 import numpy as np
-from feedback_search.constants import ALPHA, BETA, GAMMA, title_weight, summary_weight, content_weight
 
+from feedback_search import constants
 from feedback_search import preprocess
 
 logger = logging.getLogger('feedback_search')
@@ -20,12 +20,12 @@ logger = logging.getLogger('feedback_search')
 class RocchioQueryOptimizer:
 
     def __init__(self):
-        self.ALPHA = ALPHA
-        self.BETA = BETA
-        self.GAMMA = GAMMA
-        self.title_weight = title_weight
-        self.summary_weight = summary_weight
-        self.content_weight = content_weight
+        self.ALPHA = constants.ALPHA
+        self.BETA = constants.BETA
+        self.GAMMA = constants.GAMMA
+        self.title_weight = constants.title_weight
+        self.summary_weight = constants.summary_weight
+        self.content_weight = constants.content_weight
 
         self.docs_weights_vectors = None
         self.query_weights_vector = None
@@ -87,7 +87,6 @@ class RocchioQueryOptimizer:
         best_bigram = bigram_indexers['title'].get_term(best_bigram_idx)
 
         if best_bigram[0] in query and best_bigram[1] in query:
-            print('HERE')
             # don't insert the bigram at all, re-order query so that the two words of bigram are together
             bigram_weights[best_bigram_idx] = 0
             query.remove(best_bigram[0])
@@ -96,7 +95,6 @@ class RocchioQueryOptimizer:
             return self.choose_best_bigram(indexers, bigram_weights, query)
 
         elif best_bigram[0] in query or best_bigram[1] in query:
-            print('THERE')
             # case only one word of bigram in query:
             # put it at the end, add the other word of the bigram to the query,
             # and add a single best word (from rocchio weights)
@@ -111,7 +109,6 @@ class RocchioQueryOptimizer:
                     query.append(term)
                     break
         else:
-            print('NOPE THERE')
             # none of the two words of the bigram is in the query, add the whole bigram
             query += [best_bigram[0], best_bigram[1]]
 
@@ -123,9 +120,10 @@ class RocchioQueryOptimizer:
         Runs Rocchio's algorithms and returns the augmented query
         Args:
             query: list of strings (preprocessed)
-            index: Indexer object (already built)
+            indexers: dict of Indexer objects (already built), one for each zone of documents
             relevant: list of ints (doc_ids)
             non_relevant: list of ints (doc_ids)
+            binary_indexers: dict of Indexer objects (already built), one for each zone of documents
         """
         self.compute_docs_weights(indexers)
         self.compute_query_weights(indexers['content'], query)
@@ -164,7 +162,9 @@ class RocchioQueryOptimizer:
             for doc_id in relevant:
                 bigram_weights += (self.BETA/len(relevant)) * self.docs_bigrams_weights_vectors[doc_id]
 
-            # faire ça sur les meilleurs terms plutôt ?
+            for doc_id in non_relevant:
+                bigram_weights -= (self.GAMMA/len(non_relevant)) * self.docs_bigrams_weights_vectors[doc_id]
+
             for bigram_idx in range(bigram_weights.shape[0]):
                 bigram = bigram_indexers['content'].get_term(bigram_idx)
                 if not isinstance(bigram, tuple):
@@ -174,11 +174,10 @@ class RocchioQueryOptimizer:
                     weight_2 = self.rocchio_weights[indexers['content'].get_term_idx(bigram[1])]
                 except Exception:
                     print('pb with bigram: ', bigram)
-                    # print(bigram_indexers['content'].vocabulary_index)
 
                 # combine single words rocchio weights and the bigram weight:
-                bigram_weights[bigram_idx] *= 0
-                bigram_weights[bigram_idx] += 1 * (weight_1 + weight_2)/2 # give more importance to rocchio
+                bigram_weights[bigram_idx] *= 1/3
+                bigram_weights[bigram_idx] += 2/3 * (weight_1 + weight_2)/2 # give more importance to unigram-rocchio weights
 
             new_query = self.choose_best_bigram(indexers, bigram_indexers, bigram_weights, query)
 

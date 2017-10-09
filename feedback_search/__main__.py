@@ -13,6 +13,7 @@ relevance feedback to improve the search results returned by Google.
 import sys
 import logging
 import threading
+import os
 
 from feedback_search import query as query_file
 from feedback_search import feedback
@@ -20,11 +21,13 @@ from feedback_search import enhance_query
 from feedback_search import index
 from feedback_search import scrape
 from feedback_search import preprocess
+from feedback_search import constants
 
-from tests import mock_feedback
+from tests import mock_feedback, mock_query_and_scraping
 
 logger = logging.getLogger('feedback_search')
 logger.propagate = False # do not log in console
+os.makedirs('logs', exist_ok=True) # create directory for logs if it's not there already
 handler = logging.FileHandler('logs/feedback_search.log')
 formatter = logging.Formatter(
     fmt='[%(asctime)s %(levelname)s]\t%(message)s',
@@ -34,7 +37,7 @@ logger.addHandler(handler)
 logger.setLevel(logging.DEBUG)
 
 
-def main():
+def main(is_test=False):
     """
     Main routine, 
     Takes initial query and target_precision provided as input,
@@ -64,7 +67,6 @@ def main():
     achieved_precision = 0
 
     # Build one index for each zone of the documents (see enhance_query):
-    # indexers = {zone: index.Indexer(zone) for zone in ['title', 'summary', 'content']}
     indexers = {zone: index.UnigramIndexer(zone) for zone in ['title', 'summary', 'content']}
     bigram_indexers = {zone: index.BigramIndexer(zone) for zone in ['title', 'summary', 'content']}
 
@@ -77,21 +79,24 @@ def main():
         print('Precision = {}'.format(target_precision))
         print('')
         
-        results = query_file.query_google(query)
+        if not is_test:
+            results = query_file.query_google(query)
 
-        # Fetch the whole documents by scraping the urls in results, as a background task
-        scraping_thread = threading.Thread(target=scrape.add_url_content, args=(results,))
-        scraping_thread.start()
+            # Fetch the whole documents by scraping the urls in results, as a background task
+            scraping_thread = threading.Thread(target=scrape.add_url_content, args=(query, results))
+            scraping_thread.start()
 
-        if len(results) < 10:
-            print('Too few results, aborting...')
-            break
+            if len(results) < 10:
+                print('Too few results, aborting...')
+                break
 
-        # Ask feedback to user, store feedback in results dict directly
-        feedback.ask_feedback(results)
-        # mock_feedback.mock_feedback(results, query='jaguar')
+            # Ask feedback to user, store feedback in results dict directly
+            feedback.ask_feedback(results)
+            scraping_thread.join() # make sure all the documents have been scraped
 
-        scraping_thread.join() # make sure all the documents have been scraped
+        elif is_test:
+            results = mock_query_and_scraping.load_query_results(query)
+            mock_feedback.mock_feedback(results, query=query)
 
         relevant = [doc['id'] for doc in results if doc['relevant']]
         non_relevant = [doc['id'] for doc in results if not doc['relevant']]
@@ -103,7 +108,8 @@ def main():
 
         logger.info('[MAIN]\t\t orginal query: %s', query)
         query = preprocess.split_remove_punctuation(query)
-        # query = preprocess.stem(query)
+        if constants.USE_STEMMING:
+            query = preprocess.stem(query)
         logger.info('[MAIN]\t\t preprocessed query: %s', query)
 
         indexing_threads = []
@@ -125,6 +131,10 @@ def main():
         print('Achieved precision: ', achieved_precision)
 
         query = query_optimizer.enhance(query, indexers, relevant, non_relevant, bigram_indexers=bigram_indexers)
+
+        if is_test:
+            # in tests we do unly one run of the query optimizer with mock feedback and analyze it
+            return query
 
 if __name__ == '__main__':
     main()

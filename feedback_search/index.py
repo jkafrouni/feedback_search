@@ -1,4 +1,5 @@
 from feedback_search import preprocess
+from feedback_search import constants
 
 import re
 import time
@@ -14,7 +15,7 @@ class Indexer:
     - stores them in an inverted index, 
     - computes terms frequencies,
     - computes vector of term frequencies for each document
-th    """
+    """
     def __init__(self, zone='content'):
         self.zone = zone
         self.num_of_docs = 0
@@ -39,7 +40,7 @@ th    """
         return math.log(1 + self.docs_tf_vectors[doc_id][term_idx], 10)
 
     def idf(self, term_idx):
-        if self.inverted_file[term_idx]: # A VERIFIER
+        if self.inverted_file[term_idx]:
             return math.log(self.num_of_docs/len(self.inverted_file[term_idx]))
         else:
             return 0
@@ -104,11 +105,13 @@ class UnigramIndexer(Indexer):
             # so that multiple indexers can be used together in enhance_query
             zone_terms = preprocess.split_remove_punctuation(zone_terms)
             zone_terms = preprocess.remove_stopwords(zone_terms, words_to_keep=query)
-            # zone_terms = preprocess.stem(zone_terms)
+            if constants.USE_STEMMING:
+                zone_terms = preprocess.stem(zone_terms)
 
             all_terms = preprocess.split_remove_punctuation(all_terms)
             all_terms = preprocess.remove_stopwords(all_terms, words_to_keep=query)
-            # all_terms = preprocess.stem(all_terms)
+            if constants.USE_STEMMING:
+                all_terms = preprocess.stem(all_terms)
 
             documents_terms.append(zone_terms)
             vocabulary_list += all_terms
@@ -138,12 +141,14 @@ class BigramIndexer(Indexer):
             # so that multiple indexers can be used together in enhance_query
             zone_terms = preprocess.split_remove_punctuation(zone_terms)
             zone_terms = preprocess.remove_stopwords(zone_terms, words_to_keep=query)
-            # zone_terms = preprocess.stem(zone_terms)
+            if constants.USE_STEMMING:
+                zone_terms = preprocess.stem(zone_terms)
             zone_bigrams = preprocess.get_bigrams(zone_terms)
 
             all_terms = preprocess.split_remove_punctuation(all_terms)
             all_terms = preprocess.remove_stopwords(all_terms, words_to_keep=query)
-            # all_terms = preprocess.stem(all_terms)
+            if constants.USE_STEMMING:
+                all_terms = preprocess.stem(all_terms)
             all_bigrams = preprocess.get_bigrams(all_terms)
 
             documents_bigrams.append(zone_bigrams)

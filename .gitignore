@@ -2,3 +2,5 @@ __pycache__
 *.pyc
 config.py
 logs/feedback_search.log
+tests/parameters_tuning.txt
+tests/query_history.json
