@@ -1,0 +1,704 @@
+
+
+--------------------------------------------------------------------------------------------------------------------
+QUERY 1 : Look for information on the Per Se restaurant in New York City, starting with the query [per se].
+--------------------------------------------------------------------------------------------------------------------
+$ python3 -m feedback_search "per se" 0.9
+
+Parameters:
+Query = per se
+Precision = 0.9
+
+Google Search Results:
+======================
+Result  1
+[
+URL:  https://www.thomaskeller.com/perseny
+Title:  Per Se | Thomas Keller Restaurant Group
+Summary:  Per Se entrance. center. Macadamia nut dipped in chocolate. left. Mini meat filled 
+pastries. right. Per Se Salon. center. Fish and vegetables. right. Oysters and ...
+] 
+
+Relevant (Y/N)?y
+Result  2
+[
+URL:  http://www.dictionary.com/browse/per-se
+Title:  Per se | Define Per se at Dictionary.com
+Summary:  Per se definition, by, of, for, or in itself; intrinsically: This candidate is not a pacifist 
+per se, but he is in favor of peaceful solutions when practicable. See more.
+] 
+
+Relevant (Y/N)?n
+Result  3
+[
+URL:  https://en.wiktionary.org/wiki/per_se
+Title:  per se - Wiktionary
+Summary:  Borrowed from Latin per se (“by itself”), from per (“by, through”) and se (“itself, 
+himself, ... Well, that's not correct per se, but the situation is something like that.
+] 
+
+Relevant (Y/N)?n
+Result  4
+[
+URL:  https://en.wikipedia.org/wiki/Per_se
+Title:  Per se - Wikipedia
+Summary:  Per se may refer to: per se (Latin), a Latin phrase meaning "by itself" or "in itself". 
+Illegal per se, the legal usage in criminal and anti-trust law; Negligence per se, ...
+] 
+
+Relevant (Y/N)?n
+Result  5
+[
+URL:  https://www.merriam-webster.com/dictionary/perse
+Title:  Perse | Definition of Perse by Merriam-Webster
+Summary:  Define perse: of a dark grayish blue resembling indigo — perse in a sentence.
+] 
+
+Relevant (Y/N)?n
+Result  6
+[
+URL:  https://www.yelp.com/biz/per-se-new-york
+Title:  Per Se - 3915 Photos & 1289 Reviews - French - 10 Columbus Cir ...
+Summary:  1289 reviews of Per Se "Went in under the assumption that I would be blown 
+away considering the hype and the prices - but didn't actually expect it to meet, ...
+] 
+
+Relevant (Y/N)?y
+Result  7
+[
+URL:  https://www.nytimes.com/2016/01/13/dining/pete-wells-per-se-review.html
+Title:  At Thomas Keller's Per Se, Slips and Stumbles - The New York Times
+Summary:  Jan 12, 2016 ... Such is Per Se's mystique that I briefly wondered if the failure to bring her a new 
+napkin could have been intentional. The restaurant's identity, to ...
+] 
+
+Relevant (Y/N)?y
+Result  8
+[
+URL:  https://www.vocabulary.com/dictionary/per%20se
+Title:  per se - Dictionary Definition : Vocabulary.com
+Summary:  Per se is the phrase to use when you want to refer to a particular thing on its own. 
+It is not this Latin phrase, per se, that is important, but rather the concept it ...
+] 
+
+Relevant (Y/N)?n
+Result  9
+[
+URL:  http://nymag.com/listings/restaurant/per-se/
+Title:  Per Se - Upper West Side - New York Magazine Restaurant Guide
+Summary:  Profile. When it debuted in 2004, Thomas Keller's Per Se was the belle of the 
+city's restaurant ball. There was nothing stagy or solemn about the food, which 
+felt ...
+] 
+
+Relevant (Y/N)?y
+Result  10
+[
+URL:  https://www.opentable.com/per-se-reservations-new-york
+Title:  Per Se reservations in New York, NY | OpenTable
+Summary:  Make a restaurant reservation at Per Se in New York, NY. Select date, time, and 
+party size to find a table.
+] 
+
+Relevant (Y/N)?y
+Achieved precision:  0.5
+Parameters:
+Query = se keller per restaurant
+Precision = 0.9
+
+Google Search Results:
+======================
+Result  1
+[
+URL:  https://www.thomaskeller.com/perseny
+Title:  Per Se | Thomas Keller Restaurant Group
+Summary:  Per Se entrance. center. Macadamia nut dipped in chocolate. left. Mini meat filled 
+pastries. right. Per Se Salon. center. Fish and vegetables. right. Oysters and ...
+] 
+
+Relevant (Y/N)?y
+Result  2
+[
+URL:  https://ny.eater.com/2016/1/28/10858508/thomas-keller-per-se-response
+Title:  Keller Responds to Per Se Review: 'We Are Sorry We Let You Down ...
+Summary:  Jan 28, 2016 ... Two weeks ago, Pete Wells delivered a sharp, swift blow to Thomas Keller and 
+his crew at Per Se by demoting the restaurant from four stars ...
+] 
+
+Relevant (Y/N)?y
+Result  3
+[
+URL:  https://www.thomaskeller.com/new-york-new-york/per-se/restaurant
+Title:  Restaurant | Thomas Keller Restaurant Group
+Summary:  Restaurant. Opened in 2004, Per Se is Thomas Keller's acclaimed New York 
+interpretation of The French Laundry in the Time Warner Center at Columbus 
+Circle ...
+] 
+
+Relevant (Y/N)?y
+Result  4
+[
+URL:  https://www.eater.com/2016/6/7/11875946/thomas-keller-per-se-worlds-50-best-restuarants
+Title:  Thomas Keller's Per Se and French Laundry Drop Off World's 50 ...
+Summary:  Jun 7, 2016 ... Next week in New York, the somewhat fickle culinary deities at the World's 50 
+Best Restaurants will unveil their annual ranking of global ...
+] 
+
+Relevant (Y/N)?y
+Result  5
+[
+URL:  http://www.townandcountrymag.com/leisure/arts-and-culture/a7685/thomas-keller-per-se-new-york-times-review/
+Title:  Thomas Keller Responds to New York Times Review of Per Se ...
+Summary:  Sep 8, 2016 ... T&C; Exclusive: The country's leading chef responds to the critics and talks about 
+the future of his restaurant empire.
+] 
+
+Relevant (Y/N)?y
+Result  6
+[
+URL:  https://www.nytimes.com/2016/01/13/dining/pete-wells-per-se-review.html
+Title:  At Thomas Keller's Per Se, Slips and Stumbles - The New York Times
+Summary:  Jan 12, 2016 ... Such is Per Se's mystique that I briefly wondered if the failure to bring her a new 
+napkin could have been intentional. The restaurant's identity, to ...
+] 
+
+Relevant (Y/N)?y
+Result  7
+[
+URL:  https://en.wikipedia.org/wiki/Per_Se_(restaurant)
+Title:  Per Se (restaurant) - Wikipedia
+Summary:  Per Se is a New American and French restaurant located on the fourth floor of the 
+Time Warner ... The owner is Thomas Keller, who opened Per Se in February of 
+2004 and is also involved in the restaurants The French Laundry and Ad Hoc in ...
+] 
+
+Relevant (Y/N)?y
+Result  8
+[
+URL:  http://nymag.com/nymetro/food/reviews/restaurant/9333/
+Title:  Thomas Keller's Per Se - New York Magazine Restaurant Review
+Summary:  During the course of one of my long, exhaustively intricate meals at Per Se, 
+Thomas Keller's new restaurant in the Time Warner Center, one of my guests ...
+] 
+
+Relevant (Y/N)?y
+Result  9
+[
+URL:  http://www.miaminewtimes.com/restaurants/the-french-laundry-and-per-ses-thomas-keller-opening-miami-restaurant-in-2018-9027597
+Title:  The French Laundry and Per Se's Thomas Keller Opening Miami...
+Summary:  Dec 30, 2016 ... Thomas Keller, among America's most revered chefs, put to bed ... Laundry and 
+Per Se's Thomas Keller Opening Miami Restaurant in 2018.
+] 
+
+Relevant (Y/N)?y
+Result  10
+[
+URL:  http://www.esquire.com/food-drink/restaurants/news/a41981/per-se-new-york-times-chef-reactions/
+Title:  Why That Per Se Review May Change Fine Dining Forever
+Summary:  Feb 10, 2016 ... ... and Per Se lose their stars. And Keller certainly hasn't surrendered. ... to say 
+what he feels. I'm sure Per Se will be a better restaurant for it." ...
+] 
+
+Relevant (Y/N)?y
+Achieved precision:  1.0
+
+
+--------------------------------------------------------------------------------------------------------------------
+QUERY 2: Look for information on Google cofounder Sergey Brin, starting with the query [brin].
+--------------------------------------------------------------------------------------------------------------------
+$ python3 -m feedback_search "brin" 0.9
+
+Parameters:
+Query = brin
+Precision = 0.9
+Google Search Results:
+======================
+Result  1
+[
+URL:  https://en.wikipedia.org/wiki/Sergey_Brin
+Title:  Sergey Brin - Wikipedia
+Summary:  Sergey Mikhaylovich Brin is a Russian-born American computer scientist and 
+internet entrepreneur. Together with Larry Page, he co-founded Google. Brin is 
+the ...
+] 
+Relevant (Y/N)?y
+Result  2
+[
+URL:  http://www.thefreedictionary.com/brin
+Title:  Brin - definition of brin by The Free Dictionary
+Summary:  Define brin. brin synonyms, brin pronunciation, brin translation, English dictionary 
+definition of brin. n 1. one of two filaments of silk combined by the silkworm to ...
+] 
+Relevant (Y/N)?n
+Result  3
+[
+URL:  http://www.davidbrin.com/
+Title:  worlds of David Brin
+Summary:  The official website of best-selling science fiction writer and futurist DAVID BRIN.
+] 
+Relevant (Y/N)?n
+Result  4
+[
+URL:  https://en.wiktionary.org/wiki/brin
+Title:  brin - Wiktionary
+Summary:  The imported definitions may be significantly out of date, and any more recent 
+senses may be completely missing. (See the entry for brin in Webster's Revised ...
+] 
+
+Relevant (Y/N)?n
+Result  5
+[
+URL:  https://play.google.com/store/apps/details?id=io.brin.brin&hl=en
+Title:  BRiN® - Growing Your Business™ - Android Apps on Google Play
+Summary:  Want help to grow your business? Then it's time to download the world's #1 App 
+for business owners, entrepreneurs, senior leaders, executives and start-ups!
+] 
+
+Relevant (Y/N)?n
+Result  6
+[
+URL:  https://brin.ai/
+Title:  BRiN - The World's First 24/7 Business Advisor, Entrepreneur Coach ...
+Summary:  Introducing BRiN - Your Personal Business Advisor. Download BRiN today & get 
+instant access to real-time support and hundreds of business education videos.
+] 
+
+Relevant (Y/N)?n
+Result  7
+[
+URL:  http://sites.usd.edu/brin/
+Title:  brin
+Summary:  BRIN Project Description: SD BRIN has been funded by the National Center for 
+Research Resources (NIH) since 2001. We have several Cores (proteomics, ...
+] 
+
+Relevant (Y/N)?n
+Result  8
+[
+URL:  https://www.bloomberg.com/billionaires/profiles/sergey-brin/
+Title:  Bloomberg Billionaires Index - Sergey Brin
+Summary:  Overview. Brin is president of Alphabet, the holding company that owns Google, 
+the world's largest search-engine operator. He co-founded the Mountain View, ...
+] 
+
+Relevant (Y/N)?y
+Result  9
+[
+URL:  http://www.businessinsider.com/sergey-brin-resume-stanford-1996-google-2017-9
+Title:  Sergey Brin's resume from 1996, 2 years before he cofounded ...
+Summary:  Sep 27, 2017 ... Google cofounder Sergey Brin was pursuing a Ph.D. in computer science at 
+Stanford two years before Google was born.
+] 
+
+Relevant (Y/N)?y
+Result  10
+[
+URL:  https://www.bloomberg.com/news/articles/2017-04-25/with-secret-airship-sergey-brin-also-wants-to-fly
+Title:  With Secret Airship, Sergey Brin Also Wants to Fly - Bloomberg
+Summary:  Apr 25, 2017 ... Sergey Brin shall have an airship. Brin, the Google co-founder, has secretly been 
+building a massive airship inside of Hangar 2 at the NASA ...
+] 
+
+Relevant (Y/N)?y
+Achieved precision:  0.4
+Parameters:
+Query = sergey brin google
+Precision = 0.9
+
+Google Search Results:
+======================
+Result  1
+[
+URL:  https://en.wikipedia.org/wiki/Sergey_Brin
+Title:  Sergey Brin - Wikipedia
+Summary:  Sergey Mikhaylovich Brin is a Russian-born American computer scientist and 
+internet entrepreneur. Together ...
+] 
+
+Relevant (Y/N)?y
+Result  2
+[
+URL:  http://www.businessinsider.com/sergey-brin-google-alphabet-life-photos-2016-12
+Title:  Sergey Brin: The life of Google's cofounder, Alphabet's president ...
+Summary:  Dec 24, 2016 ... Sergey Brin cofounded Google with Larry Page and now serves as the president 
+of Alphabet. Here's a look at how he got to where he is today.
+] 
+
+Relevant (Y/N)?y
+Result  3
+[
+URL:  https://www.ted.com/talks/sergey_brin_why_google_glass
+Title:  Sergey Brin: Why Google Glass? | TED Talk | TED.com
+Summary:  It's not a demo, more of a philosophical argument: Why did Sergey Brin and his 
+team at Google want to build an eye-mounted camera/computer, codenamed ...
+] 
+
+Relevant (Y/N)?y
+Result  4
+[
+URL:  https://www.cnbc.com/2017/05/31/google-larry-page-and-sergey-brin-ask-an-unusual-interview-question.html
+Title:  Google's Larry Page and Sergey Brin ask an unusual interview ...
+Summary:  May 31, 2017 ... If you ever landed a job interview at Google with co-founders Larry Page and 
+Sergey Brin, you'd expect the questions to be difficult.
+] 
+
+Relevant (Y/N)?y
+Result  5
+[
+URL:  https://www.forbes.com/profile/sergey-brin/
+Title:  Sergey Brin
+Summary:  Brin works as president of tech giant Alphabet, the parent firm of Google. He 
+previously ran the secretive Google X division, which made the ill-fated Google ...
+] 
+
+Relevant (Y/N)?y
+Result  6
+[
+URL:  https://www.vanityfair.com/style/2014/04/sergey-brin-amanda-rosenberg-affair
+Title:  Sergey Brin and Amanda Rosenberg: Inside the Google Co ...
+Summary:  The story behind Google co-founder Sergey Brin's liaison with Google Glass 
+marketing manager Amanda Rosenberg—and his split from his wife, genetic-
+testing ...
+] 
+
+Relevant (Y/N)?y
+Result  7
+[
+URL:  https://www.biography.com/people/sergey-brin-12103333
+Title:  Sergey Brin - Inventor, Computer Programmer, Engineer - Biography ...
+Summary:  Nov 2, 2016 ... Sergey Brin is the man who created the world's most popular search engine, 
+Google, with Larry Page in 1998. Learn more about his life and ...
+] 
+
+Relevant (Y/N)?y
+Result  8
+[
+URL:  http://www.mercurynews.com/2017/10/06/google-accused-of-racketeering-in-lawsuit-claiming-pattern-of-trade-secrets-theftt/
+Title:  Google, Larry Page and Sergey Brin accused of racketeering
+Summary:  3 days ago ... But then Google and its co-founders Larry Page and Sergey Brin “plotted to 
+squeeze Attia out of the project” and pretended to kill it but used ...
+] 
+
+Relevant (Y/N)?y
+Result  9
+[
+URL:  https://www.recode.net/2017/7/26/16035654/alphabet-uber-google-waymo-self-driving-lawsuit-deposition-sergey-brin-anthony-levandowski
+Title:  Google co-founder Sergey Brin has been instructed to give a ...
+Summary:  Jul 26, 2017 ... Alphabet's attorneys have been instructed to tell Google co-founder Sergey Brin “
+to show up” for a deposition in the company's lawsuit against ...
+] 
+
+Relevant (Y/N)?y
+Result  10
+[
+URL:  https://www.youtube.com/watch?v=0-jJRE9tRcg
+Title:  The crazy life of Google founder Sergey Brin - YouTube
+Summary:  Sep 1, 2015 ... Please try again later. Published on Sep 1, 2015. Google co-founder Sergey Brin 
+is incredibly successful. Here's a look into his unorthodox life.
+] 
+
+Relevant (Y/N)?y
+Achieved precision:  1.0
+
+-----------------------------------------------------------------------------------------------------------------------
+QUERY 3: Look for information on the animal jaguar, starting with the query [jaguar].
+-----------------------------------------------------------------------------------------------------------------------
+$ python3 -m feedback_search "jaguar" 0.9
+
+Parameters:
+Query = jaguar
+Precision = 0.9
+
+Google Search Results:
+======================
+Result  1
+[
+URL:  https://www.jaguarusa.com/index.html
+Title:  Jaguar USA: Jaguar Sedans, SUVs & Sports Cars - Official Site
+Summary:  The official home of Jaguar USA. Explore our luxury sedans, SUVs and sports 
+cars. Build Yours, Schedule a Test Drive or Find a Dealer Near You.
+] 
+
+Relevant (Y/N)?n
+Result  2
+[
+URL:  https://en.wikipedia.org/wiki/Jaguar
+Title:  Jaguar - Wikipedia
+Summary:  The jaguar (Panthera onca) is a big cat, a feline in the Panthera genus, and is the 
+only extant Panthera species native to the Americas. The jaguar is the ...
+] 
+
+Relevant (Y/N)?y
+Result  3
+[
+URL:  https://www.jaguarusa.com/build-yours/index.html
+Title:  Build Yours | Jaguar USA
+Summary:  Build your Jaguar sport luxury vehicle today. Choose from XE, XF, F-PACE or 
+other models designed to fit your lifestyle and personal taste.
+] 
+
+Relevant (Y/N)?n
+Result  4
+[
+URL:  https://en.wikipedia.org/wiki/Jaguar_Cars
+Title:  Jaguar Cars - Wikipedia
+Summary:  Jaguar is the luxury vehicle brand of Jaguar Land Rover, a British multinational 
+car manufacturer with its headquarters in Whitley, Coventry, England, owned by ...
+] 
+
+Relevant (Y/N)?n
+Result  5
+[
+URL:  https://www.jaguarusa.com/all-models/all-models/index.html
+Title:  All Models - Luxury Sedans, Sports Cars & SUVs | Jaguar USA
+Summary:  Explore the latest and newest generation cars by Jaguar. From performance 
+crossover SUVs, luxury sport sedans, coupe and convertibles to future concept 
+cars.
+] 
+
+Relevant (Y/N)?n
+Result  6
+[
+URL:  https://www.caranddriver.com/jaguar
+Title:  Jaguar Cars | 2017 Jaguar Models and Prices | Car and Driver
+Summary:  Check out the 2017 Jaguar car models, starting prices and ratings from our 
+experts at Car and Driver.
+] 
+
+Relevant (Y/N)?n
+Result  7
+[
+URL:  http://www.defenders.org/jaguar/basic-facts
+Title:  Jaguar | Basic Facts About Jaguars | Defenders of Wildlife
+Summary:  The jaguar is the largest cat in the Americas. The jaguar has a compact body, a 
+broad head and powerful jaws. Its coat is normally yellow and tan, but the color ...
+] 
+
+Relevant (Y/N)?y
+Result  8
+[
+URL:  http://www.nfl.com/teams/jacksonvillejaguars/profile?team=JAX
+Title:  Jacksonville Jaguars Team Page at NFL.com
+Summary:  Visit the Jaguars' official website for your daily fix of team information. ... 
+Jacksonville Jaguars rookie running back Leonard Fournette is already drawing 
+high ...
+] 
+
+Relevant (Y/N)?n
+Result  9
+[
+URL:  http://www.jaguars.com/
+Title:  Jacksonville Jaguars, Official Site of the Jacksonville Jaguars
+Summary:  Jaguars.com senior writer John Oehser, senior correspondent Brian Sexton and 
+reporter Ashlyn Sullivan recap an exciting win in Pittsburgh and prepare for ...
+] 
+
+Relevant (Y/N)?n
+Result  10
+[
+URL:  http://www.jaguarusa.com/certified-preowned/index.html
+Title:  Certified Pre-Owned Program Benefits | Jaguar USA
+Summary:  Learn about the benefits of the Jaguar Certified Pre-Owned Vehicle Program, 
+including a rigorous inspection and warranty information.
+] 
+
+Relevant (Y/N)?n
+Achieved precision:  0.2
+Parameters:
+Query = jaguar panthera cat
+Precision = 0.9
+
+Google Search Results:
+======================
+Result  1
+[
+URL:  https://www.panthera.org/cat/jaguar
+Title:  Jaguar
+Summary:  The jaguar is the largest wild cat in the Western Hemisphere. Although jaguar 
+populations are abundant in some areas, many are threatened by illegal hunting,
+ ...
+] 
+
+Relevant (Y/N)?y
+Result  2
+[
+URL:  https://en.wikipedia.org/wiki/Jaguar
+Title:  Jaguar - Wikipedia
+Summary:  The jaguar (Panthera onca) is a big cat, a feline in the Panthera genus, and is the 
+only extant Panthera species native to the Americas. The jaguar is the ...
+] 
+
+Relevant (Y/N)?y
+Result  3
+[
+URL:  https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1570911/
+Title:  Hyoid apparatus and pharynx in the lion (Panthera leo), jaguar ...
+Summary:  Structures of the hyoid apparatus, the pharynx and their topographical positions 
+in the lion, tiger, jaguar, cheetah and domestic cat were described in order to ...
+] 
+
+Relevant (Y/N)?n
+Result  4
+[
+URL:  https://en.wikipedia.org/wiki/Black_panther
+Title:  Black panther - Wikipedia
+Summary:  A black panther is the melanistic color variant of any big cat species. Black 
+panthers in Asia and ... Melanism. Melanism in the jaguar (Panthera onca) is 
+conferred by a dominant allele, and in the leopard (Panthera pardus) by a 
+recessive allele.
+] 
+
+Relevant (Y/N)?n
+Result  5
+[
+URL:  https://www.ncbi.nlm.nih.gov/pubmed/12363272
+Title:  Hyoid apparatus and pharynx in the lion (Panthera leo), jaguar ...
+Summary:  Hyoid apparatus and pharynx in the lion (Panthera leo), jaguar (Panthera onca), 
+tiger (Panthera tigris), cheetah (Acinonyxjubatus) and domestic cat (Felis ...
+] 
+
+Relevant (Y/N)?n
+Result  6
+[
+URL:  http://www.defenders.org/jaguar/basic-facts
+Title:  Jaguar | Basic Facts About Jaguars | Defenders of Wildlife
+Summary:  The jaguar is the largest cat in the Americas. The jaguar has a compact body, a 
+broad head and powerful jaws. Its coat is normally yellow and tan, but the color ...
+] 
+
+Relevant (Y/N)?y
+Result  7
+[
+URL:  http://wildcatsmagazine.nl/wild-cats/jaguar-panthera-onca/
+Title:  Jaguar (Panthera Onca) - Wild Cats Magazine
+Summary:  The jaguar is one of the big cats in the Panthera genus.. It is the only Panthera 
+found in the Americas. The jaguar is the third-largest big cat (feline) after the tiger
+ ...
+] 
+
+Relevant (Y/N)?y
+Result  8
+[
+URL:  http://news.nationalgeographic.com/news/2015/01/150116-black-animals-cats-leopards-science-jaguars-genetics/
+Title:  What's a Black Panther, Really?
+Summary:  Jan 17, 2015 ... It's not a separate species, but rather a big cat with a gene that produces ... A 
+black jaguar (Panthera onca) crouches in a pool of water in Brazil.
+] 
+
+Relevant (Y/N)?n
+Result  9
+[
+URL:  https://www.amazon.com/Jaguar-Panthera-Leopard-Prowling-Wildlife/dp/B008R7HR8G
+Title:  Amazon.com: Jaguar (Panthera, Leopard) Prowling Cat Wildlife ...
+Summary:  Amazon.com: Jaguar (Panthera, Leopard) Prowling Cat Wildlife Animal Wall 
+Decor Art Print Poster (16x20): Impact Posters Animals: Posters & Prints.
+] 
+
+Relevant (Y/N)?y
+Result  10
+[
+URL:  http://www.arkive.org/jaguar/panthera-onca/
+Title:  Jaguar videos, photos and facts - Panthera onca | Arkive
+Summary:  The jaguar (Panthera onca) is the largest cat of the Americas and a formidable 
+predator. Its common name comes from the native Indian name 'yaguara', ...
+] 
+
+Relevant (Y/N)?y
+Achieved precision:  0.6
+Parameters:
+Query = cat panthera americas jaguar feline
+Precision = 0.9
+
+Google Search Results:
+======================
+Result  1
+[
+URL:  https://en.wikipedia.org/wiki/Jaguar
+Title:  Jaguar - Wikipedia
+Summary:  The jaguar has been an American cat since crossing the ... of modern animals is 
+Panthera onca augusta, which was ...
+] 
+
+Relevant (Y/N)?y
+Result  2
+[
+URL:  https://www.panthera.org/cat/jaguar
+Title:  Jaguar
+Summary:  The jaguar is the largest wild cat in the Western Hemisphere. Although jaguar 
+populations are abundant in some areas, many are threatened by illegal hunting,
+ ...
+] 
+
+Relevant (Y/N)?y
+Result  3
+[
+URL:  http://www.defenders.org/jaguar/basic-facts
+Title:  Jaguar | Basic Facts About Jaguars | Defenders of Wildlife
+Summary:  The jaguar is the largest cat in the Americas. The jaguar has a ... Did You Know? 
+The jaguar is the third-largest living feline species, after the tiger and lion.
+] 
+
+Relevant (Y/N)?y
+Result  4
+[
+URL:  https://www.livescience.com/27301-jaguars.html
+Title:  Fun Facts About Jaguars
+Summary:  Sep 21, 2017 ... Credit: Panthera. Jaguars are large cats that can be found in North, Central and 
+South America. They are identified by their yellow or orange ...
+] 
+
+Relevant (Y/N)?y
+Result  5
+[
+URL:  https://wildcatconservation.org/wild-cats/south-america/jaguar/
+Title:  Jaguar - International Society for Endangered Cats (ISEC) Canada
+Summary:  Jaguars Panthera onca are the largest wild cats in the Americas. Often confused 
+with the Leopard Panthera pardus in pictures, they would not be in the wild, due ...
+] 
+
+Relevant (Y/N)?y
+Result  6
+[
+URL:  http://www.nationalgeographic.com/animals/mammals/j/jaguar/
+Title:  Jaguar | National Geographic
+Summary:  Scientific Name: Panthera onca ... Jaguars are the largest of South America's big 
+cats. ... Camera-trap technology has been a key tool in providing habitat.
+] 
+Summary:  Build your Jaguar sport luxury vehicle today. Choose from XE, XF, F-PACE or 
+Relevant (Y/N)?y
+Result  7
+[
+URL:  https://www.economist.com/news/americas/21717415-if-big-cats-dont-kill-livestock-farmers-wont-shoot-them-bree
+ding-cows-can-defend
+Title:  Breeding cows that can defend themselves against jaguars
+Summary:  Feb 23, 2017 ... If big cats don't kill livestock, farmers won't shoot them ... Esteban Payán, who 
+directs Panthera's operations in northern South America, chose ...
+] 
+Relevant (Y/N)?y
+Result  8
+[
+URL:  http://wildcatsmagazine.nl/wild-cats/jaguar-panthera-onca/
+Title:  Jaguar (Panthera Onca) - Wild Cats Magazine
+Summary:  The jaguar is one of the big cats in the Panthera genus.. It is the only Panthera 
+found in the Americas. The jaguar is the third-largest big cat (feline) after the tiger
+ ...
+] 
+Relevant (Y/N)?y
+Result  9
+[
+URL:  http://news.nationalgeographic.com/news/2015/01/150116-black-animals-cats-leopards-science-jaguars-genetics/
+Title:  What's a Black Panther, Really?
+Summary:  Jan 17, 2015 ... First things first: A "black panther" is not its own species-it's an umbrella term that 
+refers to any big cat species that ... It's most well known in leopards, which live in 
+Asia and Africa, and jaguars, inhabitants of South America.
+] 
+Relevant (Y/N)?n
+Result  10
+[
+URL:  http://www.arkive.org/jaguar/panthera-onca/
+Title:  Jaguar videos, photos and facts - Panthera onca | Arkive
+Summary:  IUCN Red List species status – Near Threatened NEAR ... The jaguar (Panthera 
+onca) is the largest cat of the Americas and a formidable predator. Its common ...
+] 
+Relevant (Y/N)?y
+Achieved precision:  0.9

@@ -34,7 +34,7 @@ formatter = logging.Formatter(
     datefmt='%d-%m-%Y %H:%M:%S')
 handler.setFormatter(formatter)
 logger.addHandler(handler)
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 
 
 def main(is_test=False):
